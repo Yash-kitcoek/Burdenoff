@@ -39,6 +39,14 @@ The mutations are `createCollection`, `createDocument`, `updateDocument`,
 and invalid page sizes return GraphQL `BAD_USER_INPUT`; missing resources return
 `NOT_FOUND`.
 
+## Further reading
+
+- [Architecture](docs/ARCHITECTURE.md) — request lifecycle, module boundaries,
+  data model, and scaling path.
+- [API guide](docs/API.md) — copyable GraphQL operations and error behavior.
+- [Testing strategy](docs/TESTING.md) — unit/integration scope and quality gate.
+- [Implementation decisions](docs/DECISIONS.md) — tradeoffs behind the design.
+
 ## Design choices
 
 - Slugs are explicit: callers own their public identifiers and get immediate
