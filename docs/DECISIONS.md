@@ -9,7 +9,9 @@ TypeScript resolver implementation.
 
 Titles and content are trimmed and rejected when empty. Slugs use lowercase
 letters/numbers separated by single hyphens. Expected client failures are
-returned as actionable GraphQL errors before persistence.
+returned as actionable GraphQL errors before persistence. The unique-slug
+constraint is also translated to `BAD_USER_INPUT` if PostgreSQL detects a
+concurrent duplicate.
 
 ## Cursor pagination
 

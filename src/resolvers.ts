@@ -1,4 +1,4 @@
-import type { Collection, Document, Prisma, PrismaClient } from "@prisma/client";
+import { Prisma, type Collection, type Document, type PrismaClient } from "@prisma/client";
 import { badInput, notFound, requireNonEmpty, requireSlug, requireTake } from "./validation";
 
 export interface Context {
@@ -81,8 +81,18 @@ export const resolvers = {
   },
 
   Mutation: {
-    createCollection: (_parent: unknown, { input }: { input: CreateCollectionInput }, { db }: Context) =>
-      db.collection.create({ data: { name: requireNonEmpty(input.name, "name"), slug: requireSlug(input.slug) } }),
+    createCollection: async (_parent: unknown, { input }: { input: CreateCollectionInput }, { db }: Context) => {
+      try {
+        return await db.collection.create({
+          data: { name: requireNonEmpty(input.name, "name"), slug: requireSlug(input.slug) },
+        });
+      } catch (error: unknown) {
+        if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2002") {
+          throw badInput("slug must be unique");
+        }
+        throw error;
+      }
+    },
 
     createDocument: async (_parent: unknown, { input }: { input: CreateDocumentInput }, { db }: Context) => {
       await existingCollection(db, input.collectionId);
