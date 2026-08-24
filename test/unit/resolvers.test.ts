@@ -45,7 +45,10 @@ describe("document resolvers", () => {
   });
 
   test("rejects an empty document title before touching the database", async () => {
-    const fakeDb = { collection: { findUnique: async () => ({ id: "collection-1" }) } } as unknown as PrismaClient;
+    const fakeDb = {
+      collection: { findUnique: async () => ({ id: "collection-1" }) },
+      document: { create: async () => { throw new Error("should not be called"); } },
+    } as unknown as PrismaClient;
     await expect(resolvers.Mutation.createDocument({}, {
       input: { title: " ", content: "valid", tags: [], collectionId: "collection-1" },
     }, { db: fakeDb })).rejects.toThrow("title must not be empty");
