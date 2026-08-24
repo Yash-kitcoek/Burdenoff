@@ -61,3 +61,5 @@ and invalid page sizes return GraphQL `BAD_USER_INPUT`; missing resources return
 Create a collection and a document in GraphiQL; query its nested documents;
 move or archive it; show a filtered document query and `nextCursor`; then run
 `bun run sanity`.
+
+# These is all the Set up
